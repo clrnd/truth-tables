@@ -4,7 +4,6 @@ import Prelude
 
 import Data.Map
 import Data.Maybe (fromJust)
-import Data.HeytingAlgebra (not)
 import Partial.Unsafe (unsafePartial)
 import Control.Alt ((<|>))
 import Control.Lazy (fix)
@@ -19,9 +18,9 @@ data Expr = Var Char
           | And Expr Expr
           | Imp Expr Expr
 
-infixl 3 Imp as :=>
-infixl 4 Or as :||
-infixl 5 And as :&&
+infixl 0 Imp as :=>
+infixl 0 Or as :||
+infixl 0 And as :&&
 
 instance showExpr :: Show Expr where
   show (Var a) = "Var " <> show a
@@ -37,7 +36,7 @@ instance eqExpr :: Eq Expr where
   eq _ _ = false
 
 parser :: Parser String Expr
-parser = fix $ \p -> parser' p
+parser = fix $ \p -> parser' p <* skipSpaces <* eof
 
 parser' :: Parser String Expr -> Parser String Expr
 parser' p = imps

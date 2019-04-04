@@ -14,5 +14,4 @@ app = unit # makeStateless component \_ ->
   R.div_
     [ R.h1_ [ R.text "Hello world" ]
     , toggle { initialValue: true }
-    , toggle { initialValue: true }
     ]
