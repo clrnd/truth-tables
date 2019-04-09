@@ -8,12 +8,14 @@ import Partial.Unsafe (unsafePartial)
 import Control.Alt ((<|>))
 import Control.Lazy (fix)
 import Data.Either (Either(..))
+import Data.Array (some)
+import Data.String.CodeUnits (fromCharArray)
 import Text.Parsing.Parser (Parser, runParser, parseErrorMessage)
 import Text.Parsing.Parser.Combinators
 import Text.Parsing.Parser.String
 import Text.Parsing.Parser.Token
 
-data Expr = Var Char
+data Expr = Var String
           | Or Expr Expr
           | And Expr Expr
           | Imp Expr Expr
@@ -36,26 +38,24 @@ instance eqExpr :: Eq Expr where
   eq _ _ = false
 
 parser :: Parser String Expr
-parser = fix $ \p -> parser' p <* skipSpaces <* eof
+parser = fix (\p -> parser' p) <* skipSpaces <* eof
 
 parser' :: Parser String Expr -> Parser String Expr
 parser' p = imps
   where
-    imps = ors `chainl1` opImp
-    ands = (bracketed <|> vars) `chainl1` opAnd
-    ors = ands `chainl1` opOr
-    vars = Var <$> letter <* skipSpaces
-    opImp = string "=>" *> pure Imp <* skipSpaces
-    opAnd = char '&' *> pure And <* skipSpaces
-    opOr = char '|' *> pure Or <* skipSpaces
+    imps = ors `chainl1` (operator "=>" Imp)
+    ors = ands `chainl1` (operator "|" Or)
+    ands = (bracketed <|> vars) `chainl1` (operator "&" And)
+    vars = Var <<< fromCharArray <$> some alphaNum <* skipSpaces
     bracketed = char '(' *> p <* char ')' <* skipSpaces
+    operator s op = string s *> pure op <* skipSpaces
 
 parse :: String -> Either String Expr
 parse input = case runParser input parser of
   Left e -> Left $ parseErrorMessage e
   Right v -> Right v
 
-eval :: Map Char Boolean -> Expr -> Boolean
+eval :: Map String Boolean -> Expr -> Boolean
 eval m (Var v) = unsafePartial $ fromJust $ lookup v m
 eval m (p :&& q) = eval m p && eval m q
 eval m (p :|| q) = eval m p || eval m q
