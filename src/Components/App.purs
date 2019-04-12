@@ -1,17 +1,24 @@
 module Components.App where
 
 import Prelude
-
-import Components.Toggle (toggle)
-import React.Basic (Component, JSX, createComponent, makeStateless)
+import Data.Maybe (fromMaybe)
+import React.Basic.Hooks (element, CreateComponent, JSX, useState, component, (/\))
+import React.Basic.DOM.Events (capture, targetValue)
+import React.Basic.Hooks (bind) as R
 import React.Basic.DOM as R
 
-component :: Component Unit
-component = createComponent "App"
+import Lib.Parser (parse)
 
-app :: JSX
-app = unit # makeStateless component \_ ->
-  R.div_
-    [ R.h1_ [ R.text "Hello world" ]
-    , toggle { initialValue: true }
+mkApp :: CreateComponent {}
+mkApp = component "App" \props -> R.do
+  text /\ setText <- useState ""
+  pure $ R.div_
+    [ R.h1_ [ R.text "Hi!" ]
+    , R.input
+        { onChange: capture targetValue $ \v -> do
+            setText (\_ -> fromMaybe "" v)
+        , value: text
+        }
+    , R.br {}
+    , R.text (show $ parse text)
     ]
