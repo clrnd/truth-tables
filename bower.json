@@ -13,7 +13,8 @@
     "purescript-react-basic": "^8.0.0",
     "purescript-parsing": "^5.0.2",
     "purescript-strings": "^4.0.1",
-    "purescript-react-basic-hooks": "^0.6.1"
+    "purescript-react-basic-hooks": "^0.6.1",
+    "purescript-row-extra": "^0.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^4.0.0",

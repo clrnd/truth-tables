@@ -1,13 +1,16 @@
 module Components.App where
 
 import Prelude
+import Data.Array (intercalate)
 import Data.Maybe (fromMaybe)
-import React.Basic.Hooks (element, CreateComponent, JSX, useState, component, (/\))
+import React.Basic.Hooks (fragment, element, CreateComponent, JSX, useState, component, (/\))
 import React.Basic.DOM.Events (capture, targetValue)
 import React.Basic.Hooks (bind) as R
 import React.Basic.DOM as R
 
 import MaterialUI.Button as M
+import MaterialUI.Paper as M
+import MaterialUI.Styles as M
 import Lib.Parser (parse, eval)
 
 mkApp :: CreateComponent {}
@@ -15,17 +18,30 @@ mkApp = component "App" \props -> R.do
 
   text /\ setText <- useState ""
 
-  pure $ R.div_
-    [ R.h1_ [ R.text "Hi!" ]
-    , element M.button { color: "primary"
-                       , children: [R.text "Lol"]
-                       , variant:  "contained"
-                       }
-    , R.input
-        { onChange: capture targetValue $ \v -> do
-            setText (\_ -> fromMaybe "" v)
-        , value: text
+  pure $ M.muiThemeProvider
+    { theme: theme
+    , children:
+    [ M.paper {elevation:4}
+        [ R.text "Hi!"
+        , M.button { color: M.primary
+                   , variant: M.contained
+                   , children: [R.text "Lol"]
+                   }
+        , R.input
+            { onChange: capture targetValue $ \v -> do
+                setText (\_ -> fromMaybe "" v)
+            , value: text
+            }
+        , R.br {}
+        , R.text (show $ parse text)
+        ]
+      ]
+    }
+
+theme :: M.Theme
+theme = M.createMuiTheme {
+    typography: {
+        fontFamily: fonts
         }
-    , R.br {}
-    , R.text (show $ parse text)
-    ]
+    }
+  where fonts = intercalate "," ["SymbolaRegular", "Helvetica", "Arial", "sans-serif"]

@@ -1,8 +1,6 @@
 module Main where
 
 import Prelude
-
-import Components.App (mkApp)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (throw)
@@ -13,11 +11,13 @@ import Web.HTML (window)
 import Web.HTML.HTMLDocument (toNonElementParentNode)
 import Web.HTML.Window (document)
 
+import Components.App (mkApp)
+
 main :: Effect Unit
 main = do
   root <- getElementById "root" =<< (map toNonElementParentNode $ document =<< window)
   case root of
     Nothing -> throw "Root element not found."
     Just r  -> do
-        app <- mkApp
-        render (element app {}) r
+        app <- mkApp >>= \a -> pure (element a {})
+        render app r
