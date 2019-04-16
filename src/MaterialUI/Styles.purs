@@ -3,6 +3,7 @@ module MaterialUI.Styles where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import Record as Record
 
 type CreateThemeOpts =
     ( typography :: { | ( fontFamily :: String ) } )
@@ -20,8 +21,9 @@ foreign import createMuiThemeImpl :: forall x. x -> Theme
 createMuiTheme :: forall p. SubRow p CreateThemeOpts => { | p } -> Theme
 createMuiTheme = createMuiThemeImpl
 
-muiThemeProvider :: forall p. SubRow p MuiThemeProviderProps => { | p } -> JSX
-muiThemeProvider = element muiThemeProviderImpl
+muiThemeProvider :: forall p. SubRow p MuiThemeProviderProps => { | p } -> Array JSX -> JSX
+muiThemeProvider props children = element muiThemeProviderImpl $
+    Record.union { children } props
 
 muiThemeProvider_ :: Array JSX -> JSX
 muiThemeProvider_ children = element muiThemeProviderImpl { children }

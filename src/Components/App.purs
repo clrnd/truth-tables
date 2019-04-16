@@ -9,6 +9,7 @@ import React.Basic.Hooks (bind) as R
 import React.Basic.DOM as R
 
 import MaterialUI.Button as M
+import MaterialUI.Grid as M
 import MaterialUI.Paper as M
 import MaterialUI.Styles as M
 import Lib.Parser (parse, eval)
@@ -18,25 +19,22 @@ mkApp = component "App" \props -> R.do
 
   text /\ setText <- useState ""
 
-  pure $ M.muiThemeProvider
-    { theme: theme
-    , children:
-    [ M.paper {elevation:4}
+  pure $ M.muiThemeProvider { theme: theme }
+    [ M.grid { container: true, spacing: M.spacing16, justify: M.centerJustify }
+    [ M.grid { item: true, sm: M.grids12, alignItems: M.centerItems }
         [ R.text "Hi!"
         , M.button { color: M.primary
-                   , variant: M.contained
-                   , children: [R.text "Lol"]
-                   }
+                   , variant: M.contained }
+          [ R.text "Lol" ]
         , R.input
-            { onChange: capture targetValue $ \v -> do
-                setText (\_ -> fromMaybe "" v)
-            , value: text
-            }
+          { onChange: capture targetValue $ \v -> do
+              setText (\_ -> fromMaybe "" v)
+          , value: text }
         , R.br {}
         , R.text (show $ parse text)
         ]
       ]
-    }
+    ]
 
 theme :: M.Theme
 theme = M.createMuiTheme {

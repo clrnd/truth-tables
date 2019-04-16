@@ -3,6 +3,7 @@ module MaterialUI.Button where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import Record as Record
 
 type ButtonProps =
   ( color :: Color
@@ -14,7 +15,6 @@ type ButtonProps =
   , mini :: Boolean
   , size :: Size
   , variant :: Variant
-  , children :: Array JSX
   )
 
 
@@ -71,8 +71,8 @@ large = Size "large"
 
 foreign import buttonImpl :: forall p. ReactComponent p
 
-button :: forall p. SubRow p ButtonProps => { | p } -> JSX
-button = element buttonImpl
+button :: forall p. SubRow p ButtonProps => { | p } -> Array JSX -> JSX
+button props children = element buttonImpl $ Record.union { children } props
 
 button_ :: Array JSX -> JSX
 button_ children  = element buttonImpl { children }
