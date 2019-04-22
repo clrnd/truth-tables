@@ -6,8 +6,8 @@ import React.Basic (JSX, ReactComponent, element)
 import Record as Record
 
 type PaperProps =
-  ( elevation :: Int
-  , square :: Boolean
+  ( elevation :: Int -- ^ Default: `2`
+  , square :: Boolean -- ^ Default: `false`
   )
 
 

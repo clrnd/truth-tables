@@ -10,7 +10,6 @@ type CreateThemeOpts =
 
 type MuiThemeProviderProps =
   ( theme :: Theme
-  , children :: Array JSX
   )
 
 foreign import data Theme :: Type
