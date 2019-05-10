@@ -8,6 +8,7 @@ import React.Basic.DOM.Events (capture, targetValue)
 import React.Basic.Hooks (bind) as R
 import React.Basic.DOM as R
 
+import Components.ResultTable as C
 import MaterialUI.Button as M
 import MaterialUI.Input as M
 import MaterialUI.Divider as M
@@ -23,19 +24,23 @@ mkApp = component "App" \props -> R.do
   equation /\ setEquation <- useState ""
 
   pure $ M.muiThemeProvider { theme: theme }
-    [ M.grid { container: true, spacing: M.spacing16, justify: M.centerJustify }
+    [ M.grid { container: true, spacing: M.spacing8, justify: M.centerJustify }
       [ M.grid { item: true, sm: M.grids6 }
-        [ M.paper_
-          [ M.typography_ [ R.text "Hi!" ]
-          , M.typography_ [ R.text "Blha lbahbaslhdab d asldblasbd l asbdldabs" ]
-          , M.divider_
+        [ M.paper { style: { padding: 8 } }
+          [ M.typography { variant: M.variantH2 } [ R.text "Hi!" ]
+          , M.typography_ [ R.text "Some blah blah thing" ]
           , M.input
-            { defaultValue: "p & q => r"
+            { placeholder: "p & q => r"
             , fullWidth: true
             , onChange: capture targetValue $ \v -> do
                 setEquation (\_ -> fromMaybe "" v)
             , value: equation }
-          , R.text (show $ parse equation)
+          ]
+        ]
+      , M.grid { item: true, sm: M.grids12 } []
+      , M.grid { item: true, sm: M.grids6 }
+        [ M.paper { style: { padding: 8 } }
+          [ C.resultTable (parse equation)
           ]
         ]
       ]

@@ -3,11 +3,13 @@ module MaterialUI.Paper where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import MaterialUI.StyleProps
 import Record as Record
 
 type PaperProps =
   ( elevation :: Int -- ^ Default: `2`
   , square :: Boolean -- ^ Default: `false`
+  , style :: StyleProps
   )
 
 

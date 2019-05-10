@@ -62,6 +62,15 @@ variantButton = Variant "button"
 variantH1 :: Variant
 variantH1 = Variant "h1"
 
+variantH2 :: Variant
+variantH2 = Variant "h2"
+
+variantH3 :: Variant
+variantH3 = Variant "h3"
+
+variantH4 :: Variant
+variantH4 = Variant "h4"
+
 
 foreign import typographyImpl :: forall p. ReactComponent p
 
