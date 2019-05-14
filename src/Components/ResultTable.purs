@@ -19,4 +19,9 @@ resultTable (Right result) =
         [ M.tableCell_ [ R.text "lala" ]
         ]
       ]
+    , M.tableBody_
+      [ M.tableRow_
+        [ M.tableCell_ [ R.text "lele" ]
+        ]
+      ]
     ]

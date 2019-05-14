@@ -13,6 +13,8 @@ import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (run, runSpec)
 
 import Lib.Parser
+import Lib.Table
+
 
 main :: Effect Unit
 main = run [consoleReporter] do
@@ -65,3 +67,27 @@ main = run [consoleReporter] do
        eval m ((Var "p" :=> Var "q") :&& (Var "r" :|| Var "p")) `shouldEqual` false
       it "(r => p) & (r | q)" do
        eval m ((Var "r" :=> Var "p") :&& (Var "r" :|| Var "q")) `shouldEqual` true
+
+  describe "Table generator" do
+
+    describe "header works" do
+      it "a" do
+       headerFor (Var "a") `shouldEqual` [Header "a"]
+      it "a & b" do
+       headerFor (Var "a" :&& Var "b") `shouldEqual` [Header "a", Header "b"]
+      it "unordered b & a" do
+       headerFor (Var "b" :&& Var "a") `shouldEqual` [Header "a", Header "b"]
+      it "a | b" do
+       headerFor (Var "a" :|| Var "b") `shouldEqual` [Header "a", Header "b"]
+      it "a => b" do
+       headerFor (Var "a" :=> Var "b") `shouldEqual` [Header "a", Header "b"]
+
+    describe "rows work" do
+      it "a" do
+       rowsFor (Var "a") `shouldEqual` [ Row [false] false
+                                       , Row [true] true ]
+      it "a & b" do
+       rowsFor (Var "a" :&& Var "b") `shouldEqual` [ Row [false, false] false
+                                                   , Row [false, true] false
+                                                   , Row [true, false] false
+                                                   , Row [true, true] true ]

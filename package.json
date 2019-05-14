@@ -12,7 +12,7 @@
     "build:purs": "pulp build",
     "pscid:build": "pulp build",
     "pscid:test": "pulp test",
-    "test": "pulp test",
+    "test": "pulp -w test",
     "clean": "rm -rf output build",
     "clean:everything": "npm run clean && rm -rf node_modules bower_components"
   },
