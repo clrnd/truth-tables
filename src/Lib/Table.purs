@@ -42,20 +42,22 @@ tableFor :: Expr -> TruthTable
 tableFor e = TruthTable (headerFor e) (rowsFor e)
 
 headerFor :: Expr -> Array Header
-headerFor = sort <<< map Header <<< extractVars
+headerFor = map Header <<< extractVarsSorted
 
-extractVars :: Expr -> Array String
-extractVars (Var s) = [s]
-extractVars (e1 :&& e2) = extractVars e1 <> extractVars e2
-extractVars (e1 :|| e2) = extractVars e1 <> extractVars e2
-extractVars (e1 :=> e2) = extractVars e1 <> extractVars e2
+extractVarsSorted :: Expr -> Array String
+extractVarsSorted = sort <<< extractVars
+  where
+    extractVars (Var s) = [s]
+    extractVars (e1 :&& e2) = extractVars e1 <> extractVars e2
+    extractVars (e1 :|| e2) = extractVars e1 <> extractVars e2
+    extractVars (e1 :=> e2) = extractVars e1 <> extractVars e2
 
 
 rowsFor :: Expr -> Array Row
 rowsFor e = map toRow $ combs [false, true]
   where
     combs l = traverse (\_ -> l) $ replicate size unit
-    toRow l = Row l $ eval (env l) e
-    env l = fromFoldable $ zip names l
-    names = extractVars e
+    toRow l = Row l (eval (env l) e)
+    env l = fromFoldable (zip names l)
+    names = extractVarsSorted e
     size = length names

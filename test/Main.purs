@@ -64,9 +64,9 @@ main = run [consoleReporter] do
 
     describe "complex expressions like" do
       it "(p => q) & (r | p)" do
-       eval m ((Var "p" :=> Var "q") :&& (Var "r" :|| Var "p")) `shouldEqual` false
+        eval m ((Var "p" :=> Var "q") :&& (Var "r" :|| Var "p")) `shouldEqual` false
       it "(r => p) & (r | q)" do
-       eval m ((Var "r" :=> Var "p") :&& (Var "r" :|| Var "q")) `shouldEqual` true
+        eval m ((Var "r" :=> Var "p") :&& (Var "r" :|| Var "q")) `shouldEqual` true
 
   describe "Table generator" do
 
@@ -100,8 +100,8 @@ main = run [consoleReporter] do
                , Row [true, true, true] true ]
 
     describe "full example" do
-     it "a || (b => c) && d" do
-      tableFor (Var "a" :|| (Var "b" :=> Var "c") :&& Var "d")
+     it "a | (b => c) & d" do
+      tableFor (Var "a" :|| ((Var "b" :=> Var "c") :&& Var "d"))
                `shouldEqual`
                TruthTable
                  [ Header "a", Header "b", Header "c", Header "d" ]
