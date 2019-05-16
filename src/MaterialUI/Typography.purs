@@ -5,6 +5,8 @@ import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
 import Record as Record
 
+import MaterialUI.Types
+
 type TypographyProps =
   ( align :: Alignment
   , color :: Color
@@ -14,24 +16,6 @@ type TypographyProps =
   , paragraph :: Boolean
   , variant :: Variant
   )
-
-
-newtype Alignment = Alignment String
-
-inheritAlign :: Alignment
-inheritAlign = Alignment "inherit"
-
-left :: Alignment
-left = Alignment "left"
-
-right :: Alignment
-right = Alignment "right"
-
-center :: Alignment
-center = Alignment "center"
-
-justify :: Alignment
-justify = Alignment "justify"
 
 
 newtype Color = Color String
@@ -70,6 +54,15 @@ variantH3 = Variant "h3"
 
 variantH4 :: Variant
 variantH4 = Variant "h4"
+
+variantH5 :: Variant
+variantH5 = Variant "h5"
+
+variantH6 :: Variant
+variantH6 = Variant "h6"
+
+variantTitle :: Variant
+variantTitle = Variant "title"
 
 
 foreign import typographyImpl :: forall p. ReactComponent p

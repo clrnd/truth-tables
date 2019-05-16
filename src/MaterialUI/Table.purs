@@ -6,12 +6,18 @@ import React.Basic (JSX, ReactComponent, element)
 import React.Basic.Events (EventHandler)
 import Record as Record
 
+import MaterialUI.StyleProps
+import MaterialUI.Types
 
-type TableProps = ()
+
+type TableProps s =
+  ( style :: { | s }
+  )
 
 foreign import tableImpl :: forall p. ReactComponent p
 
-table :: forall p. SubRow p TableProps => { | p } -> Array JSX -> JSX
+table :: forall s p. SubRow s StyleProps =>
+                     SubRow p (TableProps s) => { | p } -> Array JSX -> JSX
 table props children = element tableImpl $ Record.union { children } props
 
 table_ :: Array JSX -> JSX
@@ -19,7 +25,9 @@ table_ children  = element tableImpl { children }
 
 ----------------------------
 
-type TableBodyProps = ()
+type TableBodyProps =
+  (
+  )
 
 foreign import tableBodyImpl :: forall p. ReactComponent p
 
@@ -48,10 +56,12 @@ tableRow_ children  = element tableRowImpl { children }
 
 ----------------------------
 
-type TableCellProps =
+type TableCellProps s =
   ( numeric :: Boolean
   , padding :: Padding
   , onClick :: EventHandler
+  , align :: Alignment
+  , style :: { | s }
   )
 
 newtype Padding = Padding String
@@ -71,7 +81,8 @@ none = Padding "none"
 
 foreign import tableCellImpl :: forall p. ReactComponent p
 
-tableCell :: forall p. SubRow p TableCellProps => { | p } -> Array JSX -> JSX
+tableCell :: forall s p. SubRow s StyleProps =>
+                         SubRow p (TableCellProps s) => { | p } -> Array JSX -> JSX
 tableCell props children = element tableCellImpl $ Record.union { children } props
 
 tableCell_ :: Array JSX -> JSX

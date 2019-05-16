@@ -72,52 +72,52 @@ main = run [consoleReporter] do
 
     describe "header works" do
       it "a" do
-       headerFor (Var "a") `shouldEqual` [Header "a"]
+        headerFor (Var "a") `shouldEqual` [Header "a"]
       it "a & b" do
-       headerFor (Var "a" :&& Var "b") `shouldEqual` [Header "a", Header "b"]
+        headerFor (Var "a" :&& Var "b") `shouldEqual` [Header "a", Header "b"]
       it "unordered b & a" do
-       headerFor (Var "b" :&& Var "a") `shouldEqual` [Header "a", Header "b"]
+        headerFor (Var "b" :&& Var "a") `shouldEqual` [Header "a", Header "b"]
 
     describe "rows work" do
       it "a" do
-       rowsFor (Var "a") `shouldEqual` [ Row [false] false
-                                       , Row [true] true ]
+        rowsFor (Var "a") `shouldEqual` [ Row [false] false
+                                        , Row [true] true ]
       it "a & b" do
-       rowsFor (Var "a" :&& Var "b") `shouldEqual` [ Row [false, false] false
-                                                   , Row [false, true] false
-                                                   , Row [true, false] false
-                                                   , Row [true, true] true ]
+        rowsFor (Var "a" :&& Var "b") `shouldEqual` [ Row [false, false] false
+                                                    , Row [false, true] false
+                                                    , Row [true, false] false
+                                                    , Row [true, true] true ]
       it "a & b || c" do
-       rowsFor (Var "a" :&& Var "b" :|| Var "c")
-               `shouldEqual`
-               [ Row [false, false, false] false
-               , Row [false, false, true] true
-               , Row [false, true, false] false
-               , Row [false, true, true] true
-               , Row [true, false, false] false
-               , Row [true, false, true] true
-               , Row [true, true, false] true
-               , Row [true, true, true] true ]
+        rowsFor (Var "a" :&& Var "b" :|| Var "c")
+                `shouldEqual`
+                [ Row [false, false, false] false
+                , Row [false, false, true] true
+                , Row [false, true, false] false
+                , Row [false, true, true] true
+                , Row [true, false, false] false
+                , Row [true, false, true] true
+                , Row [true, true, false] true
+                , Row [true, true, true] true ]
 
     describe "full example" do
-     it "a | (b => c) & d" do
-      tableFor (Var "a" :|| ((Var "b" :=> Var "c") :&& Var "d"))
-               `shouldEqual`
-               TruthTable
-                 [ Header "a", Header "b", Header "c", Header "d" ]
-                 [ Row [false, false, false, false] false
-                 , Row [false, false, false, true] true
-                 , Row [false, false, true, false] false
-                 , Row [false, false, true, true] true
-                 , Row [false, true, false, false] false
-                 , Row [false, true, false, true] false
-                 , Row [false, true, true, false] false
-                 , Row [false, true, true, true] true
-                 , Row [true, false, false, false] true
-                 , Row [true, false, false, true] true
-                 , Row [true, false, true, false] true
-                 , Row [true, false, true, true] true
-                 , Row [true, true, false, false] true
-                 , Row [true, true, false, true] true
-                 , Row [true, true, true, false] true
-                 , Row [true, true, true, true] true ]
+      it "a | (b => c) & d" do
+        tableFor (Var "a" :|| ((Var "b" :=> Var "c") :&& Var "d"))
+                 `shouldEqual`
+                 TruthTable
+                   [ Header "a", Header "b", Header "c", Header "d" ]
+                   [ Row [false, false, false, false] false
+                   , Row [false, false, false, true] true
+                   , Row [false, false, true, false] false
+                   , Row [false, false, true, true] true
+                   , Row [false, true, false, false] false
+                   , Row [false, true, false, true] false
+                   , Row [false, true, true, false] false
+                   , Row [false, true, true, true] true
+                   , Row [true, false, false, false] true
+                   , Row [true, false, false, true] true
+                   , Row [true, false, true, false] true
+                   , Row [true, false, true, true] true
+                   , Row [true, true, false, false] true
+                   , Row [true, true, false, true] true
+                   , Row [true, true, true, false] true
+                   , Row [true, true, true, true] true ]

@@ -21,7 +21,7 @@ import Lib.Parser (parse, eval)
 mkApp :: CreateComponent {}
 mkApp = component "App" \props -> R.do
 
-  equation /\ setEquation <- useState ""
+  equation /\ setEquation <- useState "a | (b=>c) & d"
 
   pure $ M.muiThemeProvider { theme: theme }
     [ M.grid { container: true, spacing: M.spacing8, justify: M.centerJustify }
@@ -39,7 +39,7 @@ mkApp = component "App" \props -> R.do
         ]
       , M.grid { item: true, sm: M.grids12 } []
       , M.grid { item: true, sm: M.grids6 }
-        [ M.paper { style: { padding: 8 } }
+        [ M.paper { style: { padding: 10 } }
           [ C.resultTable (parse equation)
           ]
         ]
@@ -49,7 +49,8 @@ mkApp = component "App" \props -> R.do
 theme :: M.Theme
 theme = M.createMuiTheme {
     typography: {
-        fontFamily: fonts
+        fontFamily: fonts,
+        useNextVariants: true
         }
     }
   where fonts = intercalate "," ["SymbolaRegular", "Helvetica", "Arial", "sans-serif"]

@@ -6,7 +6,7 @@ import React.Basic (JSX, ReactComponent, element)
 import Record as Record
 
 type CreateThemeOpts =
-    ( typography :: { | ( fontFamily :: String ) } )
+    ( typography :: { | ( fontFamily :: String, useNextVariants :: Boolean ) } )
 
 type MuiThemeProviderProps =
   ( theme :: Theme
