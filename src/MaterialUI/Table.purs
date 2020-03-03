@@ -3,21 +3,20 @@ module MaterialUI.Table where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import React.Basic.DOM (CSS)
 import React.Basic.Events (EventHandler)
 import Record as Record
 
-import MaterialUI.StyleProps
 import MaterialUI.Types
 
 
-type TableProps s =
-  ( style :: { | s }
+type TableProps =
+  ( style :: CSS
   )
 
 foreign import tableImpl :: forall p. ReactComponent p
 
-table :: forall s p. SubRow s StyleProps =>
-                     SubRow p (TableProps s) => { | p } -> Array JSX -> JSX
+table :: forall p. SubRow p TableProps => { | p } -> Array JSX -> JSX
 table props children = element tableImpl $ Record.union { children } props
 
 table_ :: Array JSX -> JSX
@@ -43,6 +42,7 @@ type TableRowProps =
   ( hover :: Boolean
   , selected :: Boolean
   , onClick :: EventHandler
+  , style :: CSS
   )
 
 
@@ -56,12 +56,12 @@ tableRow_ children  = element tableRowImpl { children }
 
 ----------------------------
 
-type TableCellProps s =
+type TableCellProps =
   ( numeric :: Boolean
   , padding :: Padding
   , onClick :: EventHandler
   , align :: Alignment
-  , style :: { | s }
+  , style :: CSS
   )
 
 newtype Padding = Padding String
@@ -81,8 +81,7 @@ none = Padding "none"
 
 foreign import tableCellImpl :: forall p. ReactComponent p
 
-tableCell :: forall s p. SubRow s StyleProps =>
-                         SubRow p (TableCellProps s) => { | p } -> Array JSX -> JSX
+tableCell :: forall p. SubRow p TableCellProps => { | p } -> Array JSX -> JSX
 tableCell props children = element tableCellImpl $ Record.union { children } props
 
 tableCell_ :: Array JSX -> JSX

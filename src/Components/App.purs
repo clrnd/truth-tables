@@ -26,7 +26,7 @@ mkApp = component "App" \props -> R.do
   pure $ M.muiThemeProvider { theme: theme }
     [ M.grid { container: true, spacing: M.spacing8, justify: M.centerJustify }
       [ M.grid { item: true, sm: M.grids6 }
-        [ M.paper { style: { padding: 8 } }
+        [ M.paper { style: R.css { padding: 8 } }
           [ M.typography { variant: M.variantH2 } [ R.text "Hi!" ]
           , M.typography_ [ R.text "Some blah blah thing" ]
           , M.input
@@ -37,9 +37,9 @@ mkApp = component "App" \props -> R.do
             , value: equation }
           ]
         ]
-      , M.grid { item: true, sm: M.grids12 } []
+      , M.grid { lel: "lol", item: true, sm: M.grids12 } []
       , M.grid { item: true, sm: M.grids6 }
-        [ M.paper { style: { padding: 10 } }
+        [ M.paper { style: R.css { padding: 10 } }
           [ C.resultTable (parse equation)
           ]
         ]
@@ -49,8 +49,8 @@ mkApp = component "App" \props -> R.do
 theme :: M.Theme
 theme = M.createMuiTheme {
     typography: {
-        fontFamily: fonts,
-        useNextVariants: true
-        }
+      fontFamily: fonts,
+      useNextVariants: true
     }
+  }
   where fonts = intercalate "," ["SymbolaRegular", "Helvetica", "Arial", "sans-serif"]

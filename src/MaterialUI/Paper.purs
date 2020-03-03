@@ -3,21 +3,20 @@ module MaterialUI.Paper where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import React.Basic.DOM (CSS)
 import Record as Record
 
-import MaterialUI.StyleProps
 
-type PaperProps s =
+type PaperProps =
   ( elevation :: Int -- ^ Default: `2`
   , square :: Boolean -- ^ Default: `false`
-  , style :: { | s }
+  , style :: CSS
   )
 
 
 foreign import paperImpl :: forall p. ReactComponent p
 
-paper :: forall s p. SubRow s StyleProps =>
-                     SubRow p (PaperProps s) => { | p } -> Array JSX -> JSX
+paper :: forall p. SubRow p PaperProps => { | p } -> Array JSX -> JSX
 paper props children = element paperImpl $ Record.union { children } props
 
 paper_ :: Array JSX -> JSX
