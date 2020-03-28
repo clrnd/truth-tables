@@ -6,18 +6,18 @@ import Data.Either (Either(..))
 import Data.Map (fromFoldable)
 import Data.Tuple (Tuple(..))
 import Effect (Effect)
-import Effect.Aff (launchAff_)
+import Effect.Aff (Aff, launchAff_)
 import Test.Spec (describe, it)
 import Test.Spec.Assertions (shouldEqual)
 import Test.Spec.Reporter.Console (consoleReporter)
-import Test.Spec.Runner (run, runSpec)
+import Test.Spec.Runner (runSpec)
 
 import Lib.Parser
 import Lib.Table
 
 
 main :: Effect Unit
-main = run [consoleReporter] do
+main = launchAff_ $ runSpec [consoleReporter] do
   describe "Parsing" do
 
     describe "simple expressions like" do

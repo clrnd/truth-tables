@@ -3,7 +3,8 @@ module Components.App where
 import Prelude
 import Data.Array (intercalate)
 import Data.Maybe (fromMaybe)
-import React.Basic.Hooks (fragment, element, CreateComponent, JSX, useState, component, (/\))
+import Effect (Effect)
+import React.Basic.Hooks (fragment, element, ReactComponent, JSX, useState, component, (/\))
 import React.Basic.DOM.Events (capture, targetValue)
 import React.Basic.Hooks (bind) as R
 import React.Basic.DOM as R
@@ -18,7 +19,7 @@ import MaterialUI.Styles as M
 import MaterialUI.Typography as M
 import Lib.Parser (parse, eval)
 
-mkApp :: CreateComponent {}
+mkApp :: Effect (ReactComponent {})
 mkApp = component "App" \props -> R.do
 
   equation /\ setEquation <- useState "a | (b=>c) & d"
@@ -28,7 +29,7 @@ mkApp = component "App" \props -> R.do
       [ M.grid { item: true, sm: M.grids6 }
         [ M.paper { style: R.css { padding: 8 } }
           [ M.typography { variant: M.variantH2 } [ R.text "Hi!" ]
-          , M.typography_ [ R.text "Some blah blah thing" ]
+          , M.typography_ [ R.text "Some blah thing" ]
           , M.input
             { placeholder: "p & q => r"
             , fullWidth: true
@@ -37,7 +38,7 @@ mkApp = component "App" \props -> R.do
             , value: equation }
           ]
         ]
-      , M.grid { lel: "lol", item: true, sm: M.grids12 } []
+      , M.grid { item: true, sm: M.grids12 } []
       , M.grid { item: true, sm: M.grids6 }
         [ M.paper { style: R.css { padding: 10 } }
           [ C.resultTable (parse equation)
