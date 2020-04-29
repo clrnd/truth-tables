@@ -1,15 +1,17 @@
-# react-basic-starter
+# Truth Tables
 
-Fork or clone this repo to begin
+A Purescript implementation of a truth table, with a logical propositions parser and a trivial evaluator.
+
+Deployed version: http://clrnd.com.ar/stuff/truth-tables
 
 ## Install dependencies
 
-`npm i && npx bower i`
+`npm i`
 
 ## Develop
 
 `npm start`
 
-## Build and deploy (gh-pages)
+## Build
 
-`npm run deploy`
+`npm run build`
