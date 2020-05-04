@@ -3,16 +3,18 @@ set -euxo pipefail
 
 npm run clean
 
-mkdir .tmp/
+TEMPDIR=app
+
+mkdir ${TEMPDIR}
 
 # Bundle the app
-spago bundle-app --main Main --to .tmp/index.js
+spago bundle-app --main Main --to ${TEMPDIR}/index.js
 
 # Use the same index.html as in development
-cp static/index.html .tmp/
+cp static/index.html ${TEMPDIR}/
 
 # Parcel build
-parcel build --public-url ./ .tmp/index.html
+parcel build --public-url ./ ${TEMPDIR}/index.html
 
 # Clean all
-rm -r .tmp/
+rm -r ${TEMPDIR}/
