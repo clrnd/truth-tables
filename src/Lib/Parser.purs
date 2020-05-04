@@ -19,22 +19,25 @@ data Expr = Var String
           | Or Expr Expr
           | And Expr Expr
           | Imp Expr Expr
+          | Not Expr
 
 infixl 0 Imp as :=>
 infixl 0 Or as :||
 infixl 0 And as :&&
 
 instance showExpr :: Show Expr where
-  show (Var a) = "Var " <> show a
+  show (Var a) = show a
   show (Or e1 e2) = "(" <> show e1 <> " | " <> show e2 <> ")"
   show (And e1 e2) = "(" <> show e1 <> " & " <> show e2 <> ")"
   show (Imp e1 e2) = "(" <> show e1 <> " => " <> show e2 <> ")"
+  show (Not e) = "~" <> show e
 
 instance eqExpr :: Eq Expr where
-  eq (Var s) (Var s') = s == s'
-  eq (Or e1 e2) (Or e1' e2') = e1 == e1' && e2 == e2'
+  eq (Var s)     (Var s')      = s == s'
+  eq (Or e1 e2)  (Or e1' e2')  = e1 == e1' && e2 == e2'
   eq (And e1 e2) (And e1' e2') = e1 == e1' && e2 == e2'
   eq (Imp e1 e2) (Imp e1' e2') = e1 == e1' && e2 == e2'
+  eq (Not e1)    (Not e1')     = e1 == e1'
   eq _ _ = false
 
 parser :: Parser String Expr
@@ -45,8 +48,10 @@ parser' p = imps
   where
     imps = ors `chainl1` (operator "=>" Imp)
     ors = ands `chainl1` (operator "|" Or)
-    ands = (bracketed <|> vars) `chainl1` (operator "&" And)
-    vars = Var <<< fromCharArray <$> some alphaNum <* skipSpaces
+    ands = (not' <|> subexp) `chainl1` (operator "&" And)
+    not' = Not <$> (char '~' *> subexp)
+    subexp = bracketed <|> vars
+    vars = (Var <<< fromCharArray) <$> some alphaNum <* skipSpaces
     bracketed = char '(' *> p <* char ')' <* skipSpaces
     operator s op = string s *> pure op <* skipSpaces
 
@@ -60,3 +65,4 @@ eval m (Var v) = unsafePartial $ fromJust $ lookup v m
 eval m (p :&& q) = eval m p && eval m q
 eval m (p :|| q) = eval m p || eval m q
 eval m (p :=> q) = if (eval m p && not eval m q) then false else true
+eval m (Not p) = not $ eval m p

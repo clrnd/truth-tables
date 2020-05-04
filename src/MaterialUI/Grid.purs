@@ -3,6 +3,7 @@ module MaterialUI.Grid where
 import Prelude
 import Row.Class (class SubRow)
 import React.Basic (JSX, ReactComponent, element)
+import React.Basic.DOM (CSS)
 import Record as Record
 import Unsafe.Coerce (unsafeCoerce)
 
@@ -168,6 +169,7 @@ type GridProps =
   , spacing :: Spacing -- ^ Default: 0
   , wrap :: Wrap -- ^ Default: `wrap`
   , zeroMinWidth :: Boolean -- ^ Default: `false`
+  , style :: CSS
   )
 
 

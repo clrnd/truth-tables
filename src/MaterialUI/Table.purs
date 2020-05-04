@@ -66,8 +66,8 @@ type TableCellProps =
 
 newtype Padding = Padding String
 
-default :: Padding
-default = Padding "default"
+--default :: Padding
+--default = Padding "default"
 
 checkbox :: Padding
 checkbox = Padding "checkbox"
